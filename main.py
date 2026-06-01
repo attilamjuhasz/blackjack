@@ -84,10 +84,11 @@ while play:
         blackJack = True
 
     decision = True
+    bust = False
     while decision and not blackJack:
-        type = input("Hit, Check, or Double Down (h, c, d): ")
+        type = input("Hit, Stand, or Double Down (h, s, d): ")
 
-        if type == "c":
+        if type == "s":
             decision = False
         
         elif type == "h":
@@ -103,13 +104,12 @@ while play:
             if total > 21:
                 print("Bust!")
                 money -= bet
+                bust = True
                 decision = False
             elif total == 21:
                 blackJack = True
                 print("Blackjack!")
                 decision = False
-            else:
-                decision = True
         elif type == "d":
             bet *= 2
             newVal = getOneCard()
@@ -126,6 +126,7 @@ while play:
             if total > 21:
                 print("Bust!")
                 money -= bet
+                bust = True
                 decision = False
             elif total == 21:
                 blackJack = True
@@ -133,4 +134,32 @@ while play:
                 decision = False
             else:
                 decision = False
-        
+
+    print(f"Dealer has a {dCardOne} and {dCardTwo}")
+
+    temp = dTotal
+    if bust == False:
+        while temp < 17:
+            dNewVal = getOneCard()
+            dNewCard = highCard(dNewVal)
+
+            if dNewVal > 10 and dNewVal != 14:
+                dNewVal = 10
+            elif dNewVal == 14:
+                dNewVal = 11
+            print("Dealer has a " + str(dTotal) + " and a " + str(dNewCard))
+            dTotal += dNewVal
+            if dTotal > 21:
+                print("Dealer Bust!")
+            elif total == 21:
+                blackJack = True
+                print("Dealer got Blackjack!")
+            temp = dTotal
+    
+    if total > dTotal:
+        money +=bet
+    elif total < dTotal:
+        money -=bet
+            
+
+    print(f"Your money: {money}")
